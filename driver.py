@@ -2,42 +2,26 @@ import cProfile
 from importlib import import_module
 from pathlib import Path
 
-fun_mapper = {
-    "fun_python.random_int": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_python.random_int_type_hinted": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_faker.random_int": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_cython.fun_python_random_int": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_cython.fun_python_random_int_type_hinted": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_cython.fun_faker_random_int": {
-        "min": 1,
-        "max": 10_000
-    },
-
-    "fun_cython.fun_faker_random_int_type_hinted": {
+int_min_max = {
         "min": 1,
         "max": 10_000
     }
+
+fun_mapper = {
+    "fun_python.random_int": int_min_max,
+    "fun_faker.random_int": int_min_max,
+    "fun_cython.fun_python_random_int": int_min_max,
+
+    "fun_cython.fun_python_random_int_type_hinted": int_min_max,
+    "fun_cython.fun_faker_random_int": int_min_max,
+    "fun_cython.fun_faker_random_int_type_hinted": int_min_max
 }
+
+
+def _get_header(function_name, calls_count):
+    header = f"{function_name} : {calls_count:_}"
+    delimiter = '-' * len(header)
+    return f"{delimiter}\n{header}\n{delimiter}"
 
 
 if __name__ == '__main__':
@@ -57,7 +41,8 @@ if __name__ == '__main__':
                 for i in range(n):
                     fun(**kwargs)
 
-            print(f"\n{'-' * 50 } -> {function_path} : {n:_}\n")
+            print(_get_header(function_path, n))
+
             pr.dump_stats(f"{REPORTS_DIR}/{function_path}_{n:_}")
             # p = pstats.Stats(stats_file)
             # p.strip_dirs().sort_stats(-1).print_stats()

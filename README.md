@@ -20,4 +20,4 @@ We use standard Python [cprofile](https://docs.python.org/3/library/profile.html
 
 * `pip install -r requirements.txt` to install dependencies 
 * `python setup.py build_ext --inplace` to build cython code
-* `python driver.py`
+* `python driver.py` to profile various generation methods 

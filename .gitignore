@@ -1,0 +1,6 @@
+/reports
+/build
+/.idea
+__pycache__
+*.c
+*.pyd

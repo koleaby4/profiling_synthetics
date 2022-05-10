@@ -8,9 +8,10 @@
 
 1. plain Python ('random' library)
 2. [faker](https://faker.readthedocs.io/en/master/)
-3. [cython](https://cython.readthedocs.io/en/latest/)
-4. [mypyc](https://mypyc.readthedocs.io/en/latest)
-5. using [ctypes](https://docs.python.org/3/library/ctypes.html) to run high-performance (c?) fakers
+3. [mimesis](https://mimesis.name/en/master/)
+4. [cython](https://cython.readthedocs.io/en/latest/)
+5. [mypyc](https://mypyc.readthedocs.io/en/latest)
+6. using [ctypes](https://docs.python.org/3/library/ctypes.html) to run high-performance (c?) fakers
 
 # How do we measure?
 

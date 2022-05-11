@@ -2,13 +2,17 @@ from pathlib import Path
 from importlib import import_module
 import cProfile
 
-def _get_header(function_name, calls_count):
+from typing import Callable
+import types
+
+
+def _get_header(function_name: str, calls_count: int) -> str:
     header = f"{function_name} : {calls_count:_}"
     delimiter = '-' * len(header)
     return f"{delimiter}\n{header}\n{delimiter}"
 
 
-def _assure_report_dir(dir_name):
+def _assure_report_dir(dir_name: str) -> Path:
     report_dir = Path("reports") / dir_name
 
     if not report_dir.exists():
@@ -17,12 +21,12 @@ def _assure_report_dir(dir_name):
     return report_dir
 
 
-def profile_function(function_path, times_to_run, *args, **kwargs):
+def profile_function(function_path: str, times_to_run: int, *args, **kwargs) -> None:
     module_name, function_name = function_path.split(".")
-    module = import_module(module_name)
-    fun = module.__dict__[function_name]
+    module: types.ModuleType = import_module(module_name)
+    fun: Callable = module.__dict__[function_name]
 
-    report_dir = _assure_report_dir(Path(__file__).stem)
+    report_dir: Path = _assure_report_dir(Path(__file__).stem)
 
     for n in [times_to_run]:
         with cProfile.Profile() as pr:

@@ -1,6 +1,6 @@
 from utils import profile_function
-import pyximport
 
+import pyximport
 pyximport.install()
 
 int_min_max = {
@@ -18,6 +18,7 @@ fun_mapper = {
     # "fun_cython.fun_faker_random_int": int_min_max,
     # "fun_cython.fun_faker_random_int_type_hinted": int_min_max
 }
+
 
 if __name__ == '__main__':
 

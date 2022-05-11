@@ -1,16 +1,23 @@
 from utils import profile_function
 
+import pyximport
+pyximport.install()
+
 
 dates_range = {
         "year_start": 1950,
         "year_end": 2050,
     }
 
+
 fun_mapper = {
     "fun_python.random_date": dates_range,
     "fun_faker.random_date": dates_range,
+    "fun_faker.random_date_weightless": dates_range,
     "fun_mimesis.random_date": dates_range,
+    "fun_cython.fun_faker_random_date": dates_range,
 }
+
 
 def main() -> None:
     times_to_run = 100_000  # dates are slow hence lower number or calls

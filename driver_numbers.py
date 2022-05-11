@@ -1,25 +1,23 @@
-import cProfile
-from importlib import import_module
-from pathlib import Path
-
 from utils import profile_function
+import pyximport
+
+pyximport.install()
 
 int_min_max = {
-        "min": 1,
-        "max": 10_000
-    }
+    "min": 1,
+    "max": 10_000
+}
 
 fun_mapper = {
     "fun_python.random_int": int_min_max,
     "fun_faker.random_int": int_min_max,
     "fun_mimesis.random_int": int_min_max,
 
-    # "fun_cython.fun_python_random_int": int_min_max,
+    "fun_cython.fun_python_random_int": int_min_max,
     # "fun_cython.fun_python_random_int_type_hinted": int_min_max,
     # "fun_cython.fun_faker_random_int": int_min_max,
     # "fun_cython.fun_faker_random_int_type_hinted": int_min_max
 }
-
 
 if __name__ == '__main__':
 

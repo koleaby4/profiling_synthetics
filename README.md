@@ -20,5 +20,6 @@ We use standard Python [cprofile](https://docs.python.org/3/library/profile.html
 # Useful commands
 
 * `pip install -r requirements.txt` to install dependencies 
-* `python setup.py build_ext --inplace` to build cython code
-* `python driver.py` to profile various generation methods 
+* to profile various generation methods:
+  * `python driver_numbers.py` 
+  * `python driver_dates.py` 

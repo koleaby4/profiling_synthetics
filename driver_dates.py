@@ -12,11 +12,13 @@ fun_mapper = {
     "fun_mimesis.random_date": dates_range,
 }
 
-
-if __name__ == '__main__':
-
+def main() -> None:
     times_to_run = 100_000  # dates are slow hence lower number or calls
 
     for function_path, kwargs in fun_mapper.items():
         profile_function(function_path, times_to_run, **kwargs)
+
+
+if __name__ == '__main__':
+    main()
 

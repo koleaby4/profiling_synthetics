@@ -23,3 +23,6 @@ We use standard Python [cprofile](https://docs.python.org/3/library/profile.html
 * to profile various generation methods:
   * `python driver_numbers.py` 
   * `python driver_dates.py` 
+* to run using `mypyc` optimisations:
+  1. `mypyc driver_numbers.py`
+  1. `python -d "import driver_numbers; driver_numbers.main()"`

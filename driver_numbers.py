@@ -12,16 +12,12 @@ fun_mapper = {
     "fun_python.random_int": int_min_max,
     "fun_faker.random_int": int_min_max,
     "fun_mimesis.random_int": int_min_max,
-
     "fun_cython.fun_python_random_int": int_min_max,
-    # "fun_cython.fun_python_random_int_type_hinted": int_min_max,
-    # "fun_cython.fun_faker_random_int": int_min_max,
-    # "fun_cython.fun_faker_random_int_type_hinted": int_min_max
+    "fun_cython.fun_faker_random_int": int_min_max,
 }
 
 
-if __name__ == '__main__':
-
+def main() -> None:
     times_to_run = 1_000_000
 
     for function_path, kwargs in fun_mapper.items():
@@ -33,3 +29,7 @@ if __name__ == '__main__':
     }
 
     profile_function("fun_mimesis.random_ints", 1, **mimesis_args)
+
+
+if __name__ == '__main__':
+    main()

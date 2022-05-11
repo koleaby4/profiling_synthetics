@@ -6,11 +6,11 @@
 
 # Options looked at
 
-1. plain Python ('random' library)
-2. [faker](https://faker.readthedocs.io/en/master/)
-3. [mimesis](https://mimesis.name/en/master/)
-4. [cython](https://cython.readthedocs.io/en/latest/)
-5. [mypyc](https://mypyc.readthedocs.io/en/latest)
+1. plain Python ('random' library and custom Python functions)
+2. [faker](https://faker.readthedocs.io/en/master/) - widely used Faker library
+3. [mimesis](https://mimesis.name/en/master/) - performance optimised Faker library
+4. [cython](https://cython.readthedocs.io/en/latest/) - creating C extensions from Python code  
+5. [mypyc](https://mypyc.readthedocs.io/en/latest) - leveraging type hints for compiling Python code to C extensions 
 6. using [ctypes](https://docs.python.org/3/library/ctypes.html) to run high-performance (c?) fakers
 
 # How do we measure?

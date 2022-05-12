@@ -1,31 +1,27 @@
-from utils import profile_function
+from utils import profile_all_from_config, render_stats
 
 import pyximport
+
 pyximport.install()
 
 
 dates_range = {
-        "year_start": 1950,
-        "year_end": 2050,
-    }
+    "year_start": 1950,
+    "year_end": 2050,
+}
 
-
-fun_mapper = {
+config = {
     "fun_python.random_date": dates_range,
     "fun_faker.random_date": dates_range,
-    "fun_faker.random_date_weightless": dates_range,
     "fun_mimesis.random_date": dates_range,
     "fun_cython.fun_faker_random_date": dates_range,
 }
 
 
-def main() -> None:
-    times_to_run = 100_000  # dates are slow hence lower number or calls
-
-    for function_path, kwargs in fun_mapper.items():
-        profile_function(function_path, times_to_run, **kwargs)
+def main():
+    core_stats = profile_all_from_config(10_000, 2, 5, config)
+    render_stats(core_stats)
 
 
 if __name__ == '__main__':
     main()
-

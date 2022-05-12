@@ -16,7 +16,12 @@ def random_int_type_hinted(min: int, max: int) -> int:
 def random_date(year_start: int, year_end: int, f: Faker = fake) -> datetime.date:
     start_date = datetime.date(year_start, 1, 1)
     end_date = datetime.date(year_end, 12, 31)
-    return f.date_between_dates(start_date, end_date)
+    try:
+        return f.date_between_dates(start_date, end_date)
+    except OSError as e:
+        print(f"{e=}")
+        print(f"{start_date=}, {end_date=}")
+        raise
 
 
 def random_date_weightless(year_start: int, year_end: int) -> datetime.date:

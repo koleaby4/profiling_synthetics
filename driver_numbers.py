@@ -1,14 +1,14 @@
-from utils import profile_function
+from utils import profile_all_from_config, render_stats
 
 import pyximport
 pyximport.install()
 
 int_min_max = {
     "min": 1,
-    "max": 10_000
+    "max": 10_000_000
 }
 
-fun_mapper = {
+config = {
     "fun_python.random_int": int_min_max,
     "fun_faker.random_int": int_min_max,
     "fun_mimesis.random_int": int_min_max,
@@ -18,17 +18,8 @@ fun_mapper = {
 
 
 def main() -> None:
-    times_to_run = 1_000_000
-
-    for function_path, kwargs in fun_mapper.items():
-        profile_function(function_path, times_to_run, **kwargs)
-
-    mimesis_args = {
-        "amount": times_to_run,
-        **int_min_max
-    }
-
-    profile_function("fun_mimesis.random_ints", 1, **mimesis_args)
+    core_stats = profile_all_from_config(50_000, 2, 5, config)
+    render_stats(core_stats)
 
 
 if __name__ == '__main__':

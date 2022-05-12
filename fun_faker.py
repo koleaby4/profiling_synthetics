@@ -19,9 +19,8 @@ def random_date(year_start: int, year_end: int, f: Faker = fake) -> datetime.dat
     try:
         return f.date_between_dates(start_date, end_date)
     except OSError as e:
-        print(f"{e=}")
-        print(f"{start_date=}, {end_date=}")
-        raise
+        print(f"Ooops, failed with {e=}")
+        return random_date(year_start, year_end, f)
 
 
 def random_date_weightless(year_start: int, year_end: int) -> datetime.date:

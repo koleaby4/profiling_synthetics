@@ -1,5 +1,7 @@
 #!python
 #cython: language_level=3
+import random
+
 from faker import Faker
 
 import fun_python
@@ -10,6 +12,14 @@ import datetime
 # pyximport.install()
 
 fake = Faker()
+
+
+def random_date(year_start: int, year_end: int) -> datetime.date:
+    start_date = datetime.date(year_start, 1, 1)
+    end_date = datetime.date(year_end, 12, 31)
+    delta_days = (end_date - start_date).days
+    random_days = random.randint(1, delta_days)
+    return start_date + datetime.timedelta(days=random_days)
 
 def fun_python_random_int(min: int, max: int) -> int:
     return fun_python.random_int(min=min, max=max)

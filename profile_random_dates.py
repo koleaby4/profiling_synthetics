@@ -15,6 +15,7 @@ config = {
     "fun_faker.random_date": dates_range,
     "fun_mimesis.random_date": dates_range,
     "fun_cython.fun_faker_random_date": dates_range,
+    "fun_cython.random_date": dates_range,
 }
 
 

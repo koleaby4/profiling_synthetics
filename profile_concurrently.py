@@ -15,7 +15,8 @@ def main():
 
         config = {
             "fun_concurrently.random_dates": args,
-            "fun_concurrently.random_dates_concurrently": {**args, "chunk_size": 300_000}
+            "fun_concurrently.random_dates_thread_pool": {**args, "chunk_size": 1_000_000},
+            "fun_concurrently.random_dates_process_pool": {**args, "chunk_size": 1_000_000}
         }
         results = profile_all_from_config(1, 1, 1, config)
         for r in results:

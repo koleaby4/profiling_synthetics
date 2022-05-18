@@ -1,6 +1,10 @@
 import datetime
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
+from typing import Union
+
 import fun_python
+
+PoolExecutor = Union[ThreadPoolExecutor, ProcessPoolExecutor]
 
 
 def _get_chunks(records_count: int, chunk_size: int) -> list[int]:
@@ -13,14 +17,18 @@ def _get_chunks(records_count: int, chunk_size: int) -> list[int]:
     return (chunk_size,) * n_count + (remainder,)
 
 
-def random_dates(year_start: int, year_end: int, records_count: int) -> list[datetime.date]:
-    return [fun_python.random_date(year_start, year_end) for _ in range(records_count)]
+def random_dates_thread_pool(year_start: int, year_end: int, records_count: int, chunk_size: int) -> list[datetime.date]:
+    return _random_dates_process_pool(year_start, year_end, records_count, chunk_size, ThreadPoolExecutor)
 
 
-def random_dates_concurrently(year_start: int, year_end: int, records_count: int, chunk_size: int) -> list[datetime.date]:
-    with ThreadPoolExecutor(max_workers=10) as thread_pool:
+def random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int) -> list[datetime.date]:
+    return _random_dates_process_pool(year_start, year_end, records_count, chunk_size, ProcessPoolExecutor)
+
+
+def _random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int, pool_executor: PoolExecutor) -> list[datetime.date]:
+    with pool_executor() as executor:
         chunks = _get_chunks(records_count, chunk_size)
-        futures = [thread_pool.submit(random_dates, year_start, year_end, chunk) for chunk in chunks]
+        futures = [executor.submit(random_dates, year_start, year_end, chunk) for chunk in chunks]
 
         results = []
         for future in as_completed(futures):
@@ -28,3 +36,7 @@ def random_dates_concurrently(year_start: int, year_end: int, records_count: int
             results.extend(r)
 
     return results
+
+
+def random_dates(year_start: int, year_end: int, records_count: int) -> list[datetime.date]:
+    return [fun_python.random_date(year_start, year_end) for _ in range(records_count)]

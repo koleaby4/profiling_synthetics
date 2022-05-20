@@ -1,5 +1,6 @@
 import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
+from functools import partial
 from typing import Union
 
 import fun_python
@@ -17,15 +18,18 @@ def _get_chunks(records_count: int, chunk_size: int) -> list[int]:
     return (chunk_size,) * n_count + (remainder,)
 
 
-def random_dates_thread_pool(year_start: int, year_end: int, records_count: int, chunk_size: int) -> list[datetime.date]:
+def random_dates_thread_pool(year_start: int, year_end: int, records_count: int, chunk_size: int, max_workers: int = None) -> list[datetime.date]:
     return _random_dates_process_pool(year_start, year_end, records_count, chunk_size, ThreadPoolExecutor)
 
 
-def random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int) -> list[datetime.date]:
+def random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int, max_workers: int = None) -> list[datetime.date]:
     return _random_dates_process_pool(year_start, year_end, records_count, chunk_size, ProcessPoolExecutor)
 
 
-def _random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int, pool_executor: PoolExecutor) -> list[datetime.date]:
+def _random_dates_process_pool(year_start: int, year_end: int, records_count: int, chunk_size: int, pool_executor: PoolExecutor, max_workers: int = None) -> list[datetime.date]:
+    if max_workers:
+        pool_executor = partial(pool_executor, max_workers=max_workers)
+
     with pool_executor() as executor:
         chunks = _get_chunks(records_count, chunk_size)
         futures = [executor.submit(random_dates, year_start, year_end, chunk) for chunk in chunks]

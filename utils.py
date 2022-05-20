@@ -4,7 +4,7 @@ from importlib import import_module
 import cProfile
 import pandas as pd
 
-from typing import Callable
+from typing import Callable, Any
 import types
 import pstats
 
@@ -32,23 +32,23 @@ def _ensure_report_dir(dir_name: str) -> Path:
     return report_dir
 
 
-def profile_function(func_path: str, times_to_run: int, *args, **kwargs) -> pstats.Stats:
+def profile_function(func_path: str, times_to_run: int, *args, **kwargs) -> tuple[list[Any], pstats.Stats]:
     module_name, function_name = func_path.split(".")
     module: types.ModuleType = import_module(module_name)
     fun: Callable = module.__dict__[function_name]
 
     report_dir: Path = _ensure_report_dir(Path(__file__).stem)
-
+    results = []
     with cProfile.Profile() as pr:
         for i in range(times_to_run):
-            fun(*args, **kwargs)
+            results.append(fun(*args, **kwargs))
 
     print(_get_header(func_path, times_to_run))
 
     pr.dump_stats(f"{report_dir}/{func_path}_{times_to_run:_}")
     pr.print_stats()
 
-    return pstats.Stats(pr).strip_dirs().sort_stats(-1)
+    return results, pstats.Stats(pr).strip_dirs().sort_stats(-1)
 
 
 def get_core_stats(func_path: str, ps_stats: pstats.Stats) -> CoreStats:
@@ -89,12 +89,19 @@ def render_stats(focused_stats: list[CoreStats]) -> None:
     fig.show()
 
 
-def profile_all_from_config(times_to_run: int, growth_rate: int, laps: int, config: dict[str, dict]) -> list[CoreStats]:
+def profile_all_from_config(times_to_run: int, growth_rate: int, laps: int, config: dict[str, dict]) -> tuple[list[Any], list[CoreStats]]:
     core_stats = []
+    results = []
     for _ in range(laps):
         times_to_run *= growth_rate
         for func_path, kwargs in config.items():
-            ps_stats = profile_function(func_path, times_to_run, **kwargs)
-            core_stats.append(get_core_stats(func_path, ps_stats))
+            result, ps_stats = profile_function(func_path, times_to_run, **kwargs)
 
-    return core_stats
+            stats = get_core_stats(func_path, ps_stats)
+            if max_workers := kwargs.get("max_workers"):
+                stats.func_info += f"_{max_workers=}"
+
+            core_stats.append(stats)
+            results.append(result)
+
+    return results, core_stats

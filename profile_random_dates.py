@@ -20,7 +20,7 @@ config = {
 
 
 def main():
-    core_stats = profile_all_from_config(10_000, 2, 5, config)
+    results, core_stats = profile_all_from_config(10_000, 2, 5, config)
     render_stats(core_stats)
 
 

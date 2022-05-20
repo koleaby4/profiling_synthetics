@@ -9,7 +9,7 @@ def main():
         "fun_concurrently.random_dates_process_pool": {
             "year_start": 1950,
             "year_end": 2050,
-            "records_count": 10_000_000,
+            "records_count": 150_000_000,
             "chunk_size": 1_000_000
         }
     }
